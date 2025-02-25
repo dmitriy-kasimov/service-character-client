@@ -19,5 +19,5 @@ export type TAppearance = {
     eyebrowsColor1: number;
     eyebrowsOpacity: number;
     //
-    hairOverlay?: any;
+    faceFeatures: number[];
 };

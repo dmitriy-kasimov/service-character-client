@@ -37,7 +37,6 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
     
     browserCharacter.on("f:c:updateCharacter", (characterJson: string) => {
         const editor: TEditAppearance = JSON.parse(characterJson);
-        alt.log(editor);
 
         native.clearPedBloodDamage(ped);
         native.clearPedDecorations(ped);
@@ -63,6 +62,14 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
             0,
             false
         );
+
+        alt.log(editor.appearance.faceFeatures);
+        // face features
+        for(let i = 0; i < editor.appearance.faceFeatures.length; i++){
+            const value = editor.appearance.faceFeatures[i]
+            native.setPedMicroMorph(ped, i, value)
+        }
+
 
         // More on that below
         //alt.Utils.assert(ped.scriptID !== 0);
