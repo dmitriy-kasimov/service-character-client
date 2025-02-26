@@ -1,3 +1,5 @@
+import {TEditorOpacityOverlay} from "./TOpacityOverlay";
+
 export type TAppearance = {
     faceFather: number;
     skinFather: number;
@@ -20,4 +22,6 @@ export type TAppearance = {
     eyebrowsOpacity: number;
     //
     faceFeatures: number[];
+    //
+    opacityOverlays: TEditorOpacityOverlay;
 };

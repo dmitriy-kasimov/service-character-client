@@ -42,7 +42,6 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
         native.clearPedDecorations(ped);
         native.setPedHeadBlendData(ped, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
 
-
         const modelNeeded = editor.sex === ESex.FEMALE ? fModel : mModel;
         if(modelNeeded !== native.getEntityModel(ped)){
             alt.log('Если при смене пола тебе пришлось читать это значит ошибка');
@@ -63,13 +62,16 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
             false
         );
 
-        alt.log(editor.appearance.faceFeatures);
         // face features
         for(let i = 0; i < editor.appearance.faceFeatures.length; i++){
             const value = editor.appearance.faceFeatures[i]
             native.setPedMicroMorph(ped, i, value)
         }
 
+        alt.log(editor.appearance.opacityOverlays)
+        for(const [id, overlay] of Object.entries(editor.appearance.opacityOverlays)){
+            native.setPedHeadOverlay(ped, +id, overlay.value, overlay.opacity)
+        }
 
         // More on that below
         //alt.Utils.assert(ped.scriptID !== 0);

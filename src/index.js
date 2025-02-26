@@ -32,10 +32,13 @@ alt.onServer("s:c:createCharacter", async (characterJson) => {
         }
         native.setPedHeadBlendData(ped, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         native.setPedHeadBlendData(ped, editor.appearance.faceFather, editor.appearance.faceMother, 0, editor.appearance.skinFather, editor.appearance.skinMother, 0, editor.appearance.faceMix, editor.appearance.skinMix, 0, false);
-        alt.log(editor.appearance.faceFeatures);
         for (let i = 0; i < editor.appearance.faceFeatures.length; i++) {
             const value = editor.appearance.faceFeatures[i];
             native.setPedMicroMorph(ped, i, value);
+        }
+        alt.log(editor.appearance.opacityOverlays);
+        for (const [id, overlay] of Object.entries(editor.appearance.opacityOverlays)) {
+            native.setPedHeadOverlay(ped, +id, overlay.value, overlay.opacity);
         }
     });
 });
