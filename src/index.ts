@@ -7,6 +7,7 @@ import {
 
 import {TEditAppearance} from "./types/TEditAppearance";
 import {ESex} from "./types/ESex";
+import {femaleHairOverlays, maleHairOverlays} from "./const/hairOverlays";
 const playerid = alt.Player.local
 let browserCharacter: WebView = null;
 
@@ -37,6 +38,7 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
     
     browserCharacter.on("f:c:updateCharacter", (characterJson: string) => {
         const editor: TEditAppearance = JSON.parse(characterJson);
+        alt.log(characterJson)
 
         native.clearPedBloodDamage(ped);
         native.clearPedDecorations(ped);
@@ -68,57 +70,23 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
             native.setPedMicroMorph(ped, i, value)
         }
 
-        alt.log(editor.appearance.opacityOverlays)
         for(const [id, overlay] of Object.entries(editor.appearance.opacityOverlays)){
             native.setPedHeadOverlay(ped, +id, overlay.value, overlay.opacity)
         }
 
-        // More on that below
-        //alt.Utils.assert(ped.scriptID !== 0);
-        // Copying appearance, clothes etc. of player to the ped
-        //native.clonePedToTarget(playerid, ped);
+        const overlaysCollection = editor.sex === ESex.MALE ? maleHairOverlays : femaleHairOverlays
+        const collection = native.getHashKey(overlaysCollection[editor.appearance.hair].collection)
+        const overlay = native.getHashKey(overlaysCollection[editor.appearance.hair].overlay)
+        native.addPedDecorationFromHashes(ped, collection, overlay)
+        native.setPedComponentVariation(ped, 2, editor.appearance.hair, 0, 0)
+        native.setPedHairTint(ped, editor.appearance.hairColor1, editor.appearance.hairColor2) // !!! native.setPedHairColor
 
-        // setPedHeadBlendData(ped,
-        //     character.Appearance.HeadBlendData.ShapeFirstID, // face Father
-        //     character.Appearance.HeadBlendData.ShapeSecondID, // face Mother
-        //     0, //character.Appearance.HeadBlendData.ShapeThirdID,
-        //     character.Appearance.HeadBlendData.SkinFirstID, // skin Father
-        //     character.Appearance.HeadBlendData.SkinSecondID, // skin Mother
-        //     0, //character.Appearance.HeadBlendData.SkinThirdID,
-        //     character.Appearance.HeadBlendData.ShapeMix, // face mix
-        //     character.Appearance.HeadBlendData.SkinMix, // skin mix
-        //     0, //character.Appearance.HeadBlendData.ThirdMix,
-        //     false
-        // );
-        // setHeadBlendPaletteColor(ped,
-        //     character.Appearance.HeadBlendPaletteColor.r,
-        //     character.Appearance.HeadBlendPaletteColor.g,
-        //     character.Appearance.HeadBlendPaletteColor.b,
-        //     0
-        // );
-        // setPedMicroMorph(ped,
-        //     character.Appearance.FaceFeature.index,
-        //     character.Appearance.FaceFeature.scale,
-        //     );
-        // setPedHeadOverlay(ped,
-        //     character.Appearance.HeadOverlay.overlayID,
-        //     character.Appearance.HeadOverlay.index,
-        //     character.Appearance.HeadOverlay.opacity,
-        //     );
-        // setPedHeadOverlayTint(ped,
-        //     character.Appearance.HeadOverlayColor.overlayID,
-        //     character.Appearance.HeadOverlayColor.colorType,
-        //     character.Appearance.HeadOverlayColor.colorIndex,
-        //     character.Appearance.HeadOverlayColor.secondColorIndex,
-        //     );
-        // setHeadBlendEyeColor(ped, character.Appearance.EyeColor.index);
-        // setPedHairTint(ped, character.Appearance.HairColor.colorID, character.Appearance.HairColor.highlightColorID);
-        //
-        //
-        // setPedDlcClothes(ped.scriptID, 0, character.Clothes.Component,character.Clothes.Drawable,character.Clothes.Texture, character.Clothes.Palette)
-        //
-        // setPedDlcProp(ped.scriptID, 0, character.Props.Component, character.Props.Drawable, character.Props.Texture);
-        //
+        native.setPedHeadOverlay(ped, 1, editor.appearance.facialHair,  editor.appearance.facialHairOpacity)
+        native.setPedHeadOverlayTint(ped, 1, 1,  editor.appearance.facialHairColor1,  editor.appearance.facialHairColor1)// !!! setPedHeadOverlayColor
+
+        native.setPedHeadOverlay(ped, 2, editor.appearance.eyebrows, 1);
+        native.setPedHeadOverlayTint(ped, 2, 1, editor.appearance.eyebrowsColor1, editor.appearance.eyebrowsColor1);
+
         // alt.log(characterJson);
         //alt.emitServer("c:s:createCharacter", characterJson);
     })
