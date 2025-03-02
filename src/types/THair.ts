@@ -1,1 +1,0 @@
-export type THair = Record<string, string>

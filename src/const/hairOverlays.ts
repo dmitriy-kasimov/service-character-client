@@ -1,6 +1,6 @@
-import {THair} from "../types/THair";
+import {THairData} from "../types/THairData";
 
-export const maleHairOverlays: THair[] = [
+export const maleHairOverlays: THairData[] = [
     { collection: 'mpbeach_overlays', overlay: 'FM_Hair_Fuzz' },
     { collection: 'multiplayer_overlays', overlay: 'NG_M_Hair_001' },
     { collection: 'multiplayer_overlays', overlay: 'NG_M_Hair_002' },
@@ -76,7 +76,7 @@ export const maleHairOverlays: THair[] = [
     { collection: 'mpgunrunning_overlays', overlay: 'MP_Gunrunning_Hair_M_001_M'},
 ];
 
-export const femaleHairOverlays: THair[] = [
+export const femaleHairOverlays: THairData[] = [
     { collection: 'mpbeach_overlays', overlay: 'FM_Hair_Fuzz' },
     { collection: 'multiplayer_overlays', overlay: 'NG_F_Hair_001' },
     { collection: 'multiplayer_overlays', overlay: 'NG_F_Hair_002' },
