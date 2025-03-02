@@ -1,4 +1,5 @@
 import * as alt from 'alt-client';
+import * as native from 'natives';
 import { showCursor, WebView } from "alt-client";
 import { freezeEntityPosition } from "natives";
 import { editFaceFeaturesHandler } from "./eventHandlers/editFaceFeaturesHandler";
@@ -9,6 +10,7 @@ import { editOverlaysHandler } from "./eventHandlers/editOverlaysHandler";
 import { editSexHandler } from "./eventHandlers/editSexHandler";
 import { mModel } from "./const/models";
 import { editEyesHandler } from "./eventHandlers/editEyesHandler";
+import { editColorOverlaysHandler } from "./eventHandlers/editColorOverlaysHandler";
 let browserCharacter = null;
 alt.onServer("s:c:createCharacter", async (characterJson) => {
     browserCharacter = new WebView('http://resource/frontend/index.html');
@@ -22,11 +24,17 @@ alt.onServer("s:c:createCharacter", async (characterJson) => {
     const ped = new alt.LocalPed(mModel, dimension, pos, rot, useStreaming, streamingDistance);
     await ped.waitForSpawn(5000);
     freezeEntityPosition(ped, true);
+    native.setPedComponentVariation(ped, 3, 15, 0, 0);
+    native.setPedComponentVariation(ped, 4, 14, 0, 0);
+    native.setPedComponentVariation(ped, 6, 34, 0, 0);
+    native.setPedComponentVariation(ped, 8, 15, 0, 0);
+    native.setPedComponentVariation(ped, 11, 91, 0, 0);
     browserCharacter.on('f:c:editFaceFeatures', (response) => editFaceFeaturesHandler(ped, response));
     browserCharacter.on('f:c:editFacialHair', (response) => editFacialHairHandler(ped, response));
     browserCharacter.on('f:c:editHair', (response) => editHairHandler(ped, response));
     browserCharacter.on('f:c:editInheritance', (response) => editInheritanceHandler(ped, response));
     browserCharacter.on('f:c:editOverlays', (response) => editOverlaysHandler(ped, response));
+    browserCharacter.on('f:c:editColorOverlays', (response) => editColorOverlaysHandler(ped, response));
     browserCharacter.on('f:c:editSex', (response) => editSexHandler(ped, response));
     browserCharacter.on('f:c:editEyes', (response) => editEyesHandler(ped, response));
 });
