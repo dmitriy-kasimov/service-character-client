@@ -8,6 +8,7 @@ import { editInheritanceHandler } from "./eventHandlers/editInheritanceHandler";
 import { editOverlaysHandler } from "./eventHandlers/editOverlaysHandler";
 import { editSexHandler } from "./eventHandlers/editSexHandler";
 import { mModel } from "./const/models";
+import { editEyesHandler } from "./eventHandlers/editEyesHandler";
 let browserCharacter = null;
 alt.onServer("s:c:createCharacter", async (characterJson) => {
     browserCharacter = new WebView('http://resource/frontend/index.html');
@@ -27,4 +28,5 @@ alt.onServer("s:c:createCharacter", async (characterJson) => {
     browserCharacter.on('f:c:editInheritance', (response) => editInheritanceHandler(ped, response));
     browserCharacter.on('f:c:editOverlays', (response) => editOverlaysHandler(ped, response));
     browserCharacter.on('f:c:editSex', (response) => editSexHandler(ped, response));
+    browserCharacter.on('f:c:editEyes', (response) => editEyesHandler(ped, response));
 });

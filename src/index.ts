@@ -12,6 +12,7 @@ import {editInheritanceHandler} from "./eventHandlers/editInheritanceHandler";
 import {editOverlaysHandler} from "./eventHandlers/editOverlaysHandler";
 import {editSexHandler} from "./eventHandlers/editSexHandler";
 import {mModel} from "./const/models";
+import {editEyesHandler} from "./eventHandlers/editEyesHandler";
 
 let browserCharacter: WebView = null;
 
@@ -41,4 +42,5 @@ alt.onServer("s:c:createCharacter", async (characterJson: string) => {
     browserCharacter.on('f:c:editInheritance', (response: string) => editInheritanceHandler(ped, response))
     browserCharacter.on('f:c:editOverlays', (response: string) => editOverlaysHandler(ped, response))
     browserCharacter.on('f:c:editSex', (response: string) => editSexHandler(ped, response))
+    browserCharacter.on('f:c:editEyes', (response: string) => editEyesHandler(ped, response))
 })
