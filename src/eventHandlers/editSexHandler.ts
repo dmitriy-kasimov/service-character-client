@@ -1,4 +1,4 @@
-import {LocalPlayer, Ped, Player} from "alt-client";
+import { LocalPed, log} from "alt-client";
 import native from "natives";
 import alt from "alt-client";
 import {fModel, mModel} from "../const/models";
@@ -8,14 +8,23 @@ export enum ESex {
     MALE,
 }
 
-type TSex = {
-    sex: ESex;
-}
-export const editSexHandler = (ped: number | Ped | Player | LocalPlayer, editSexJSON: string) => {
-    const sex: TSex  = JSON.parse(editSexJSON)
 
-    const modelNeeded = sex.sex === ESex.FEMALE ? fModel : mModel;
-    if(modelNeeded !== native.getEntityModel(ped)){
-        alt.log('Если при смене пола тебе пришлось читать это значит ошибка');
+export const editSexHandler = (ped: LocalPed, editSexJSON: string) => {
+    const sex: ESex  = JSON.parse(editSexJSON)
+
+    if(sex === ESex.FEMALE){
+        ped.model = fModel
+        native.setPedComponentVariation(ped, 3, 15, 0, 0); // arms
+        native.setPedComponentVariation(ped, 4, 14, 0, 0); // pants
+        native.setPedComponentVariation(ped, 6, 35, 0, 0); // shoes
+        native.setPedComponentVariation(ped, 8, 15, 0, 0); // shirt
+        native.setPedComponentVariation(ped, 11, 15, 0, 0); // torso
+    } else {
+        ped.model = mModel
+        native.setPedComponentVariation(ped, 3, 15, 0, 0); // arms
+        native.setPedComponentVariation(ped, 4, 14, 0, 0); // pants
+        native.setPedComponentVariation(ped, 6, 34, 0, 0); // shoes
+        native.setPedComponentVariation(ped, 8, 15, 0, 0); // shirt
+        native.setPedComponentVariation(ped, 11, 91, 0, 0); // torso
     }
 }

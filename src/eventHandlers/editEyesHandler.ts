@@ -9,7 +9,6 @@ type TEyes = {
 };
 
 export const editEyesHandler = (ped: number | Ped | Player | LocalPlayer, editEyesJSON: string) => {
-    log(editEyesJSON)
     const eyes: TEyes  = JSON.parse(editEyesJSON)
 
     native.setHeadBlendEyeColor(ped, eyes.eyesColor);

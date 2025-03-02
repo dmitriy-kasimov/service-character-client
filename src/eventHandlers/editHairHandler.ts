@@ -1,6 +1,7 @@
-import {LocalPlayer, Ped, Player} from "alt-client";
+import {LocalPed} from "alt-client";
 import native from "natives";
-import {maleHairOverlays} from "../const/hairOverlays";
+import {femaleHairOverlays, maleHairOverlays} from "../const/hairOverlays";
+import {mModel} from "../const/models";
 
 type THair = {
     hair: number;
@@ -8,11 +9,11 @@ type THair = {
     hairColor2: number;
 };
 
-export const editHairHandler = (ped: number | Ped | Player | LocalPlayer, editHairJSON: string) => {
+export const editHairHandler = (ped: LocalPed, editHairJSON: string) => {
     const hair: THair  = JSON.parse(editHairJSON)
 
+    const overlaysCollection = ped.model === mModel ? maleHairOverlays : femaleHairOverlays
     //const overlaysCollection = editor.sex === ESex.MALE ? maleHairOverlays : femaleHairOverlays
-    const overlaysCollection = maleHairOverlays
     const collection = native.getHashKey(overlaysCollection[hair.hair].collection)
     const overlay = native.getHashKey(overlaysCollection[hair.hair].overlay)
     native.addPedDecorationFromHashes(ped, collection, overlay)
